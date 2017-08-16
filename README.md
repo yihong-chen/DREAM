@@ -21,22 +21,29 @@ It runs on [the Instacart dataset](https://tech.instacart.com/3-million-instacar
 
 > `dream.py`
 > * definition of DREAM
+>
 > `train.py`
 > * implementation of bpr loss function
 > * implemeantation of reorder bpr loss function
 > * training of DREAM
+>
 > `eval.py`
 > * calculate <u,p> score using DREAM
+>
 > `data.py`
 > * input wrapper for DREAM
 > * based on the Instacart Dataset
+>
 > `utils.py`
 > * some useful functions
+>
 > `config.py`
 > * DREAM configurations
+>
 > `constants.py`	
 > * some constants such as file path
-> `Make Recommendation Using DREAM`
+>
+> `Make Recommendation Using DREAM.ipynb`
 > * using trained DREAM model to generate predictors for <u,p> 
 
 ## Requirements
