@@ -4,7 +4,7 @@ This repository contains my implementations of DREAM for next basket prediction.
 
 ## Model
 
-DREAM uses RNN to capure sequential information of users' shopping behavior. It extracts users' dynamic representations and scores user-item pair by calculating inner products between users' dynamic representations and items' embedding.  
+DREAM uses RNN to capture sequential information of users' shopping behavior. It extracts users' dynamic representations and scores user-item pair by calculating inner products between users' dynamic representations and items' embedding.  
 
 Refer to the following paper:
 
