@@ -23,4 +23,9 @@ class Config(object):
         self.embedding_dim = config['embedding_dim'] # 商品表述维数， 用于定义Embedding Layer
         self.checkpoint_dir = config['checkpoint_dir']
 
-        self.alias = '{}{}_{}_{}_{}'.format(self.rnn_layer_num, self.rnn_type, self.embedding_dim, self.learning_rate, self.batch_size)
+        self.alias = '{}{}_{}_{}_{}_clip{}'.format(self.rnn_layer_num,
+                                                   self.rnn_type,
+                                                   self.embedding_dim,
+                                                   self.learning_rate,
+                                                   self.batch_size,
+                                                   self.clip)

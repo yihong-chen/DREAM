@@ -3,7 +3,7 @@ import constants
 from config import Config
 from dream import DreamModel
 from data import Dataset, BasketConstructor
-from utils import batchify, repackage_hidden
+from utils import batchify, repackage_hidden, get_grad_norm, get_ratio_update, get_weight_update
 
 import os
 import pdb
@@ -13,6 +13,7 @@ import random
 import numpy as np
 from time import time
 from math import ceil
+from copy import deepcopy
 from tensorboardX import SummaryWriter
 from sklearn.model_selection import train_test_split
 
@@ -94,9 +95,14 @@ def train_dream():
         # for p in dr_model.parameters(): # Update parameters by -lr*grad
         #    p.data.add_(- dr_config.learning_rate, p.grad.data)
         # adam
+        grad_norm = get_grad_norm(dr_model)
+        previous_params = deepcopy(list(dr_model.parameters()))
         optim.step()
 
         total_loss += loss.data
+        params = deepcopy(list(dr_model.parameters()))
+        delta = get_weight_update(previous_params, params)
+        weight_update_ratio = get_ratio_update(delta, params)
 
         # Logging
         if i % dr_config.log_interval == 0 and i > 0:
@@ -110,7 +116,8 @@ def train_dream():
                                                                                                               elapsed,
                                                                                                               cur_loss))
             writer.add_scalar('model/train_loss', cur_loss, epoch * num_batchs + i)
-
+            writer.add_scalar('model/grad_norm', grad_norm, epoch * num_batchs + i)
+            writer.add_scalar('model/weight_update_ratio', weight_update_ratio, epoch * num_batchs + i)
 
 def train_reorder_dream():
     dr_model.train()  # turn on training mode for dropout
@@ -150,9 +157,14 @@ def train_reorder_dream():
         # for p in dr_model.parameters(): # Update parameters by -lr*grad
         #    p.data.add_(- dr_config.learning_rate, p.grad.data)
         # adam
+        grad_norm = get_grad_norm(dr_model)
+        previous_params = deepcopy(list(dr_model.parameters()))
         optim.step()
 
         total_loss += loss.data
+        params = deepcopy(list(dr_model.parameters()))
+        delta = get_weight_update(previous_params, params)
+        weight_update_ratio = get_ratio_update(delta, params)
 
         # Logging
         if i % dr_config.log_interval == 0 and i > 0:
@@ -184,7 +196,8 @@ def evaluate_dream():
     # Logging
     elapsed = (time() - start_time) * 1000 / num_batchs
     total_loss = total_loss[0] / num_batchs / dr_config.batch_size
-    writer.add_scalar('model/eval_loss', total_loss, epoch * num_batchs)
+    writer.add_scalar('model/eval_loss', total_loss, (epoch + 1) * num_batchs)
+    writer.add_scalar('model/eval_loss', total_loss, (epoch + 1) * num_batchs)
     print('[Evaluation]| Epochs {:3d} | Elapsed {:02.2f} | Loss {:05.2f} |'.format(epoch, elapsed, total_loss))
 
     return total_loss

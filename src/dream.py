@@ -14,13 +14,13 @@ import torch
 from torch.autograd import Variable
 from utils import pool_max, pool_avg
 
+
 class DreamModel(torch.nn.Module):
-    '''
-       Input Data: b_1, ... b_i ..., b_t
+    """       Input Data: b_1, ... b_i ..., b_t
                    b_i stands for user u's ith basket
                    b_i = [p_1,..p_j...,p_n]
                    p_j stands for the  jth product in user u's ith basket
-    '''
+    """
     def __init__(self, config):
         super(DreamModel, self).__init__()
         # Model configuration

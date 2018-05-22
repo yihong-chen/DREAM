@@ -93,6 +93,40 @@ def repackage_hidden(h):
     else:
         return tuple(repackage_hidden(v) for v in h)
 
+###################### Summary
+def get_grad_norm(model):
+    grads = []
+    for p in model.parameters():
+        if p.grad is not None:
+            grads.append(p.grad.data.view(-1, 1))
+    assert len(grads) > 0
+    return torch.norm(torch.cat(grads))
+
+
+def get_loss(loss):
+    """Convert variable into float"""
+    loss = loss.data
+    if isinstance(loss, torch.cuda.FloatTensor):
+        loss = loss.cpu()
+    assert len(loss.numpy()) == 1, 'length of loss is large than 1'
+    return float(loss.numpy()[0])
+
+
+def get_ratio_update(delta, weight):
+    delta = torch.cat([d.data.view(-1, 1) for d in delta])
+    weight = torch.cat([w.data.view(-1, 1) for w in weight])
+    return torch.norm(delta) / torch.norm(weight)
+
+
+def get_weight_update(previous_weight, weight):
+    """
+    args:
+        previous_weight: list"""
+    deltas = []
+    for i, w in enumerate(weight):
+        deltas.append(w - previous_weight[i])
+    return deltas
+
 if __name__ == "__main__":
     tensor = torch.Tensor([[[2, 2],
                             [3, 3]
