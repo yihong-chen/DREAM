@@ -15,7 +15,7 @@ for details about DREAM.
 
 ## Dataset 
 
-It runs on [the Instacart dataset](https://tech.instacart.com/3-million-instacart-orders-open-sourced-d40d29ead6f2) and can be used in other e-commerce datasets by modifying the input easily. 
+It runs on [the Instacart dataset](https://www.kaggle.com/c/instacart-market-basket-analysis) and can be used in other e-commerce datasets by modifying the input easily. 
 
 ## Files
 
