@@ -48,7 +48,9 @@ It runs on [the Instacart dataset](https://www.kaggle.com/c/instacart-market-bas
 
 ## Requirements
 
-- pytorch == 0.1.12.post2
+- tensorboard
+- tensorboardX
+- pytorch == 0.3
 - pandas ==  0.19.2
 - scikit-learn == 0.18.1
 
@@ -56,4 +58,4 @@ You need GPU to accelerate training.
 
 ## License
 
-Copyright (c) 2017 Yihong Chen
+Copyright (c) 2018 Yihong Chen

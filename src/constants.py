@@ -1,8 +1,8 @@
-GPUS = "0,3,2,1"
+GPUS = "6,3,2,1"
 REORDER = False
-RAW_DATA_DIR = '/home/public/Instacart/raw/'
-FEAT_DATA_DIR = '/home/public/Instacart/feat/'
-DREAM_MODEL_DIR = '/home/public/Instacart/dream/'
+RAW_DATA_DIR = './tmp/raw/'
+FEAT_DATA_DIR = './tmp/feat/'
+DREAM_MODEL_DIR = './tmp/dream/'
 
 DREAM_CONFIG = {'basket_pool_type': 'max', # 'avg'
                 'rnn_layers': 2, # 2, 3
@@ -14,10 +14,10 @@ DREAM_CONFIG = {'basket_pool_type': 'max', # 'avg'
                 'none_idx': 49689,
                 'embedding_dim': 64, # 128 
                 'cuda': True, # True,
-                'clip': 20, # 0.25
+                'clip': 20,  # 0.25
                 'epochs': 100,
-                'batch_size': 256,
-                'learning_rate': 0.01, # 0.0001
+                'batch_size': 32,
+                'learning_rate': 0.001, # 0.0001
                 'log_interval': 1, # num of batchs between two logging
-                'checkpoint_dir': DREAM_MODEL_DIR + 'reorder-next-dream-{epoch:02d}-{loss:.4f}.model',
+                'checkpoint_dir': DREAM_MODEL_DIR + '\dream-{epoch:02d}-{loss:.4f}.model',
                 }

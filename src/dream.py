@@ -55,10 +55,9 @@ class DreamModel(torch.nn.Module):
                 basket = torch.LongTensor(basket).resize_(1, len(basket))
                 basket = basket.cuda() if self.config.cuda else basket # use cuda for acceleration
                 basket = self.encode(torch.autograd.Variable(basket)) # shape: 1, len(basket), embedding_dim
-                embed_baskets.append(self.pool(basket, dim = 1))
+                embed_baskets.append(self.pool(basket, dim=1))
             # concat current user's all baskets and append it to users' basket sequence
-            ub_seqs.append(torch.cat(embed_baskets, 1)) # shape: 1, num_basket, embedding_dim
-        
+            ub_seqs.append(torch.cat(embed_baskets, 0).unsqueeze(0))  # shape: 1, num_basket, embedding_dim
         # Input for rnn 
         ub_seqs = torch.cat(ub_seqs, 0).cuda() if self.config.cuda else torch.cat(ub_seqs, 0) # shape: batch_size, max_len, embedding_dim
         packed_ub_seqs = torch.nn.utils.rnn.pack_padded_sequence(ub_seqs, lengths, batch_first=True) # packed sequence as required by pytorch
