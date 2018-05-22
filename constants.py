@@ -1,4 +1,5 @@
-
+GPUS = "0,3,2,1"
+REORDER = False
 RAW_DATA_DIR = '/home/public/Instacart/raw/'
 FEAT_DATA_DIR = '/home/public/Instacart/feat/'
 DREAM_MODEL_DIR = '/home/public/Instacart/dream/'
