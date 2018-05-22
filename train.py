@@ -24,24 +24,26 @@ from sklearn.model_selection import train_test_split
 
 # CUDA environtments
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID" 
-os.environ["CUDA_VISIBLE_DEVICES"]="0,3,2,1"
+os.environ["CUDA_VISIBLE_DEVICES"]=constans.GPUS
 
 # Prepare input
 bc = BasketConstructor(constants.RAW_DATA_DIR, constants.FEAT_DATA_DIR)
 # Users' baskets
 ub_basket =bc.get_baskets('prior', reconstruct = False)
-# Users' reordered baskets, comment it if you do not need reorder prediction
-ub_rbks = bc.get_baskets('prior', reconstruct = False, reordered = True)
-# User's item history, comment it if you do not need reorder prediction
-ub_ihis = bc.get_item_history('prior', reconstruct = False)
 
-# Train test split
-train_ub, test_ub, train_rbks, test_rbks, train_ihis, test_ihis = train_test_split(ub_basket, ub_rbks, ub_ihis, test_size = 0.2)
-del ub_basket, ub_rbks, ub_ihis
-# train_ub, test_ub = Dataset(train_ub), Dataset(test_ub)
-# reorder dream input data, comment it and use the above line if you do not need reorder prediction
-train_ub, test_ub = Dataset(train_ub, train_rbks, train_ihis), Dataset(test_ub, test_rbks, test_ihis)
-del train_rbks, test_rbks, train_ihis, test_ihis
+if constants.REORDER: # For reorder prediction
+    # Users' reordered baskets 
+    ub_rbks = bc.get_baskets('prior', reconstruct = False, reordered = True)
+    # User's item history
+    ub_ihis = bc.get_item_history('prior', reconstruct = False)
+    # Train test split
+    train_ub, test_ub, train_rbks, test_rbks, train_ihis, test_ihis = train_test_split(ub_basket, ub_rbks, ub_ihis, test_size = 0.2)
+    del ub_basket, ub_rbks, ub_ihis
+    train_ub, test_ub = Dataset(train_ub, train_rbks, train_ihis), Dataset(test_ub, test_rbks, test_ihis)
+    del train_rbks, test_rbks, train_ihis, test_ihis
+ else:
+    del ub_basket
+    train_ub, test_ub = Dataset(train_ub), Dataset(test_ub)
 
 # Model config
 dr_config = Config(constants.DREAM_CONFIG)
@@ -242,11 +244,15 @@ try:
         print(k,v)
     # training
     for epoch in range(dr_config.epochs):
-        # train_dream()
-        train_reorder_dream()
+        if constants.REORDER:
+            train_reorder_dream()
+        else:
+            train_dream()
         print('-' * 89)
-        # val_loss = evaluate_dream()
-        val_loss = evaluate_reorder_dream()
+        if constants.REORDER:
+            val_loss = evaluate_reorder_dream()
+        else:
+            val_loss = evaluate_dream()
         print('-' * 89)
         # checkpoint
         if not best_val_loss or val_loss < best_val_loss:
