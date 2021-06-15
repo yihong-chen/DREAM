@@ -81,4 +81,20 @@ from torch.autograd import Variable:
 
 ### evaluate_dream
 
-- 
+- We use dr.eval as model.eval() is a kind of switch for some specific layers/parts of the model that behave differently during training and inference (evaluating) time. For example, Dropouts Layers, BatchNorm Layers etc. You need to turn off them during model evaluation, and .eval() will do it for you.
+- We then compute the total loss in a pretty obvious way
+
+### evaluate_reorder_dream
+
+- Same as above
+
+### Remaining Code 
+
+- Some CUDA related tasks using environment variables from local system
+- Using BasketConstructor from data.py followed by get_baskets we generate user baskets.
+- If REORDER is set to True in constants.py we generate new baskets with reordered set to True else we don't eitherways we split the dataset into 2/
+- We then create the long used dr_model using the configs file and passing it to the DreamModel.
+- We also move it to the GPu if possible
+- We set Adam as our optimizer
+- We instantiate a tensorboard writer object
+- We set up a try except statement to break if interrupted using a keyboard.  Else the model trains and if the val_loss achieved in an iteration is better then old ones we checkpoint it.
