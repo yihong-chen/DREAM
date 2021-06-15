@@ -59,4 +59,26 @@ from torch.autograd import Variable:
 
 ### bpr_loss
 
+- Almost same as above
+- Here neg is produced using random values between 1 and number of products
+
+### train_dream
+
+- We train the Dream model using this. 
+- We build a hidden layer. 
+- We then iterate, the batchify() function arranges the dataset into columns, trimming off any tokens remaining after the data has been divided into batches of size batch_size. For more insight read here - https://pytorch.org/tutorials/beginner/transformer_tutorial.html
+- In each iteration we find the bpr_loss and then compute it's gradient.
+- The gradients are clipped as well based on the estabilished clip in the constants.
+- get_grad_norm gets the norm of the gradients
+- Any changes made to the copy formed using deep copy do not reflect in the original object. So we get the previous parameters.
+- optim.step() updates the parameters
+- We then compute the total loss, log the new paramters, update the weights and also compute the raio of norms of how much the weights changed by (delta) w.r.t norm of the parameters. They are implemented in the utils.py file.
+- The logging function only executes at specific consitions and prints useful info
+
+### train_reorder_dream
+
+- Almost same as above. More debugging present and outputted as a pickle file if unable to run
+
+### evaluate_dream
+
 - 
