@@ -92,7 +92,7 @@ from torch.autograd import Variable:
 
 - Some CUDA related tasks using environment variables from local system
 - Using BasketConstructor from data.py followed by get_baskets we generate user baskets.
-- If REORDER is set to True in constants.py we generate new baskets with reordered set to True else we don't eitherways we split the dataset into 2/
+- If REORDER is set to True in constants.py we generate new baskets with reordered set to True else we don't eitherways we split the dataset into 2
 - We then create the long used dr_model using the configs file and passing it to the DreamModel.
 - We also move it to the GPu if possible
 - We set Adam as our optimizer
