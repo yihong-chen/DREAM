@@ -31,11 +31,11 @@ from torch.autograd import Variable:
 
 #### init_weight
 
-- The weights are initialized in the range uniform weight -0.1 and +0.1 uniformly. More insight can be gained (here)[https://stackoverflow.com/a/55546528/13858953]
+- The weights are initialized in the range uniform weight -0.1 and +0.1 uniformly. More insight can be gained at https://stackoverflow.com/a/55546528/13858953
   
 #### init_hidden
 
 - self.parameters() is a generator method that iterates over the parameters of the model. next retrieves the next item from the iterator by calling its next() method. Here, it returns the first parameter from the class.
-- Now if the RNN type is LSTM or not we branch into 2 conditionals and then weight.new() creates a tensor that has the same data type, same device as the produced parameter. You can create a Variable in any fashion, but you need to specify the data type under such circumstance. For more insight read (here)[https://discuss.pytorch.org/t/what-does-next-self-parameters-data-mean/1458]
+- Now if the RNN type is LSTM or not we branch into 2 conditionals and then weight.new() creates a tensor that has the same data type, same device as the produced parameter. You can create a Variable in any fashion, but you need to specify the data type under such circumstance. For more insight read https://discuss.pytorch.org/t/what-does-next-self-parameters-data-mean/1458
 - As far as I could understand zero_() is used to zero all gradients at the start of a minibatch. Also the parameters inside weight.new seem to indicate the dimensions. 
 - Since the original code was written Variable has been deprecated. It still works as expected, but returns Tensors instead of Variables.
