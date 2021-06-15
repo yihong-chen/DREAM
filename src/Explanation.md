@@ -39,3 +39,24 @@ from torch.autograd import Variable:
 - Now if the RNN type is LSTM or not we branch into 2 conditionals and then weight.new() creates a tensor that has the same data type, same device as the produced parameter. You can create a Variable in any fashion, but you need to specify the data type under such circumstance. For more insight read https://discuss.pytorch.org/t/what-does-next-self-parameters-data-mean/1458
 - As far as I could understand zero_() is used to zero all gradients at the start of a minibatch. Also the parameters inside weight.new seem to indicate the dimensions. 
 - Since the original code was written Variable has been deprecated. It still works as expected, but returns Tensors instead of Variables.
+
+# train.py
+
+## Important Imports - 
+ 
+ - tensorboardX summary writer lets you log PyTorch models and metrics into a directory for visualization within the TensorBoard UI. Scalars, images, histograms, graphs, and embedding visualizations are all supported for PyTorch models and tensors as well as Caffe2 nets and blobs.
+
+## Functions - 
+
+### reorder_bpr_loss
+
+- A matrix multiplication is performed between a entry from dynamic_user which we say earlier and the transposed item_embeddings. torch.mm does that.
+- Next we iterate over a padded reorder basket. If it's first entry is non-zero we convert it to a tensor and use CUDA GPU if possible.
+- Next we make a random list of size of basket and it's elements are chosen from the entries of the passed history bought items. This produces neg.
+- neg_idx is again same as pos_idx
+- We use the negative log likelihood to get score for a basket. We then use sigmoid over it and appent it to nll_u. nll likely stands for negative log likelihood.
+- Once the inner loop runs out we add the average of the losses at each user to nll and return it
+
+### bpr_loss
+
+- 
