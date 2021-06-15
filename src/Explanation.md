@@ -1,6 +1,6 @@
-dream.py
+## dream.py
 
-Imports -
+# Imports -
 
 from torch.autograd import Variable: 
 - torch.autograd provides classes and functions implementing automatic differentiation of arbitrary scalar valued functions.
