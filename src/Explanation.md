@@ -172,4 +172,47 @@ from torch.autograd import Variable:
 
 - Self explanatory
 
-# 
+# Utils.py
+
+## Functions
+
+### Pad
+
+- Pads only the first dimension and zero_() sets gradients to zero before back prop starts
+
+### sort_batch_of_lists, pad_batch_of_lists
+
+- Easy to understand from code and doc string
+
+### batchify
+
+- Takes the dataset and makes batches out of it
+- Depending on if reordered or not we branch into 2 conditionals, in the first branch we pick up chunks of desired size using data[i * batch_size : (i + 1) * batch_size] in each iteration and sort and pad them, incase there are leftovers which can't form one batch then we add random values to it's end and form the last batch. In the second conditional we do pretty much the same but just with less parameters.
+
+### pool_max and pool_avg
+
+- return max and avg of tensors
+
+### repackage_hidden
+
+- Removes all previous history to make new variables
+
+### get_grad_norm, get_loss, get_ratio_update, get_weight_update
+
+- Pretty self explanatory names and code
+
+### Remaining Code
+
+- Seems to be for testing
+
+# config.py
+
+- Takes the config data and sets it as attributes for a config object
+
+# constants.py
+
+- Contains all the directories and configs
+
+# Make Recommendation Using DREAM.ipynb
+
+- Brings it all together into one code file
