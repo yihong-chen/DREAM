@@ -98,3 +98,78 @@ from torch.autograd import Variable:
 - We set Adam as our optimizer
 - We instantiate a tensorboard writer object
 - We set up a try except statement to break if interrupted using a keyboard.  Else the model trains and if the val_loss achieved in an iteration is better then old ones we checkpoint it.
+
+# eval.py
+
+## Important Imports - 
+
+- The module pdb defines an interactive source code debugger for Python programs. 
+
+## Functions - 
+
+### eval_pred
+
+- item_embedding are generated
+- .eval() is called to stop dropout etc.
+- You recreate the hidden layer using dr_model.init_hidden(dr_model.config.batch_size). The hidden state stores the internal state of the RNN from predictions made on previous tokens in the current sequence, this allows RNNs to understand context. The hidden state is determined by the output of the previous token. When you predict for the first token of any sequence, if you were to retain the hidden state from the previous sequence your model would perform as if the new sequence was a continuation of the old sequence which would give worse results. Instead for the first token you initialise an empty hidden state, which will then be filled with the model state and used for the second token. Think about it this way: if someone asked you to classify a sentence and handed you the US constitution (irrelevant information) vs. if someone gave you some background context about the sentence and then asked you to classify the sentence. The explanation is taken from - https://stackoverflow.com/a/55351254/13858953
+- You then make some lists and begin iterating over User Baskets converted to batches
+- The ub item contains baskets, lengths and user ids
+- In the already instantiated Dream Model (dr_model) you pass the 3 entries
+- All of these go into forward method
+- Since we only need the dynamic user entry we ignore the rest
+- We then repackage the hidden values using a function from utils.py to remove any associated history
+- Then you do a nested iteration over the batch to compute user ids and their scores
+
+### eval_batch
+
+- Standard repeated stuff in the start
+- If reordering was performed you get some additional entries while iterating otherwise you not so you get 2 branched conditions
+- <u, p> score is computed inside the for loop for each user in the batch
+
+### eval_up
+
+- To compute the latest <u,p> score you first instantiate a dynamic user object and a embeddings object, multiply them and return the score.
+
+### get_dynamic_u
+
+- Using dr_model the dynamic_user is produced similar to eval_pred
+
+### get_item_embedding
+
+- This method produces the item embeddings based on the product id (pid)
+- Depending on it's type you need to unsqueeze it or leave it as it is
+
+### Remaining Code 
+
+#### Notes method from data.py are heavily used
+
+- A basket is formed using BasketConstructor
+- ub_basket produces all the user baskets
+- Dataset object is then produced from the user baskets
+- Finally up stores all the products purchased by the user
+- Rest of the code is self explanatory
+
+# data.py
+
+## Basket Constructor
+
+### Constructor 
+
+- Data input is converted to become an attribute of it's objects
+
+### get_orders, get_orders_items, get_users_orders, get_users_products, get_items, get_baskets and get_item_history
+
+- All are Dataset based and very easy to follow along with the doc string specifying their use
+
+## Dataset
+
+### Constructor
+
+- Attributes are set using the user baskets etc.
+- Depending on if reordered or not different branched conditionals are present
+
+### __getitem__ and __len__ 
+
+- Self explanatory
+
+# 
